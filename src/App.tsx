@@ -109,7 +109,7 @@ export default function App() {
               transition={{ delay: 0.3 }}
               className="flex flex-col sm:flex-row justify-center gap-4 mb-20"
             >
-              <a href="pkg/RRdis.app" download className="hero-gradient text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-xl active:scale-95 hover:shadow-primary/30 transition-all">
+              <a href="/rrdis-web/pkg/RRdis.app" download className="hero-gradient text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-xl active:scale-95 hover:shadow-primary/30 transition-all">
                 <Download size={20} />
                 {t.hero.downloadMac}
               </a>
@@ -131,7 +131,7 @@ export default function App() {
                 <img
                   alt="RRdis Interface"
                   className="rounded-xl w-full"
-                  src="assets/1.png"
+                  src="/rrdis-web/assets/1.png"
                 />
               </div>
             </motion.div>
@@ -273,7 +273,7 @@ export default function App() {
                     viewport={{ once: true }}
                     className="rounded-3xl shadow-2xl border border-black/5"
                     referrerPolicy="no-referrer"
-                    src="assets/5.png"
+                    src="/rrdis-web/assets/5.png"
                   />
                   <motion.img
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -282,7 +282,7 @@ export default function App() {
                     viewport={{ once: true }}
                     className="rounded-3xl shadow-2xl border border-black/5"
                     referrerPolicy="no-referrer"
-                    src="assets/3.png"
+                    src="/rrdis-web/assets/3.png"
                   />
                 </div>
                 <div className="space-y-4">
@@ -293,7 +293,7 @@ export default function App() {
                     viewport={{ once: true }}
                     className="rounded-3xl shadow-2xl border border-black/5"
                     referrerPolicy="no-referrer"
-                    src="assets/4.png"
+                    src="/rrdis-web/assets/4.png"
                   />
 
                 </div>
@@ -327,7 +327,7 @@ export default function App() {
                 platform={t.download.macOS}
                 details={t.download.macDetails}
                 version="v1.0 .dmg"
-                downloadUrl="pkg/RRdis_1.0.0_aarch64.dmg"
+                downloadUrl="/rrdis-web/pkg/RRdis_1.0.0_aarch64.dmg"
                 primary
               />
               <DownloadCard
@@ -335,7 +335,7 @@ export default function App() {
                 platform={t.download.windows}
                 details={t.download.winDetails}
                 version="v1.0 .msi"
-                downloadUrl="pkg/RRdis_1.0.0_x64.msi"
+                downloadUrl="/rrdis-web/pkg/RRdis_1.0.0_x64.msi"
               />
               <DownloadCard
                 icon={Terminal}
