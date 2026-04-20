@@ -4,6 +4,7 @@
  */
 
 import { motion } from "motion/react";
+import { useState } from "react";
 import {
   Download,
   Star,
@@ -12,28 +13,37 @@ import {
   Zap,
   Layout,
   Palette,
-  Languages,
+  Languages as LanguagesIcon,
   Monitor,
   Users,
   Heart,
   ChevronRight,
   ExternalLink,
-  Github
+  Github,
+  Globe
 } from "lucide-react";
+import { translations, type Language } from "./i18n";
 
-const Navbar = () => (
+const Navbar = ({ lang, setLang, t }: { lang: Language; setLang: (lang: Language) => void; t: typeof translations.en }) => (
   <nav className="sticky top-0 w-full z-50 bg-[#f7f9fb]/80 backdrop-blur-md border-b border-black/5">
     <div className="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
       <div className="text-2xl font-black tracking-tighter text-[#191c1e]">RRdis</div>
       <div className="hidden md:flex items-center gap-8">
-        <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#features">Features</a>
-        <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#demo">Demo</a>
-        <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#tech">Tech Stack</a>
-        <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#docs">Docs</a>
+        <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#features">{t.nav.features}</a>
+        <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#demo">{t.nav.demo}</a>
+        <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#tech">{t.nav.tech}</a>
+        <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#docs">{t.nav.docs}</a>
       </div>
       <div className="flex items-center gap-4">
+        <button
+          onClick={() => setLang(lang === 'en' ? 'zh' : 'en')}
+          className="flex items-center gap-2 text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors px-3 py-2 rounded-lg hover:bg-black/5"
+        >
+          <Globe size={18} />
+          {lang === 'en' ? '中文' : 'EN'}
+        </button>
         <button className="hero-gradient text-white px-6 py-2.5 rounded-lg font-semibold active:scale-95 duration-200 transition-all shadow-md">
-          Download
+          {t.nav.download}
         </button>
       </div>
     </div>
@@ -56,9 +66,12 @@ const FeatureCard = ({ icon: Icon, title, description, className = "", iconBg = 
 );
 
 export default function App() {
+  const [lang, setLang] = useState<Language>('en');
+  const t = translations[lang];
+
   return (
     <div className="min-h-screen font-sans selection:bg-primary/20">
-      <Navbar />
+      <Navbar lang={lang} setLang={setLang} t={t} />
 
       <main>
         {/* --- Hero Section --- */}
@@ -69,7 +82,7 @@ export default function App() {
               animate={{ opacity: 1, scale: 1 }}
               className="inline-block px-4 py-1.5 rounded-full bg-[#dde1ff] text-[#001356] text-sm font-semibold tracking-wide mb-8"
             >
-              V2.0 NOW AVAILABLE
+              {t.hero.badge}
             </motion.div>
 
             <motion.h1
@@ -78,7 +91,7 @@ export default function App() {
               transition={{ delay: 0.1 }}
               className="text-5xl md:text-7xl font-extrabold text-[#191c1e] tracking-tight leading-[1.05] mb-8 max-w-4xl mx-auto text-balance"
             >
-              Modern Redis Management, <span className="text-[#0040e0]">Simplified</span>
+              {t.hero.title}<span className="text-[#0040e0]">{t.hero.titleHighlight}</span>
             </motion.h1>
 
             <motion.p
@@ -87,7 +100,7 @@ export default function App() {
               transition={{ delay: 0.2 }}
               className="text-xl text-[#434656] max-w-2xl mx-auto mb-12 leading-relaxed text-balance"
             >
-              A high-performance desktop client designed for architects. Manage your data clusters with precision, speed, and a beautiful interface that stays out of your way.
+              {t.hero.subtitle}
             </motion.p>
 
             <motion.div
@@ -98,12 +111,12 @@ export default function App() {
             >
               <a href="pkg/RRdis.app" download className="hero-gradient text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-xl active:scale-95 hover:shadow-primary/30 transition-all">
                 <Download size={20} />
-                Download for macOS
+                {t.hero.downloadMac}
               </a>
-              <button className="bg-white text-[#191c1e] border border-black/5 hover:bg-black/5 px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-all">
+              <a href="https://github.com/daichongdev/rrdis-web" target="_blank" rel="noopener noreferrer" className="bg-white text-[#191c1e] border border-black/5 hover:bg-black/5 px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-all">
                 <Github size={20} />
-                Star on GitHub
-              </button>
+                {t.hero.starGithub}
+              </a>
             </motion.div>
 
             {/* --- Hero Image --- */}
@@ -129,28 +142,28 @@ export default function App() {
         <section className="py-24 px-8 bg-[#f2f4f6]" id="features">
           <div className="max-w-7xl mx-auto">
             <div className="mb-16">
-              <h2 className="text-4xl font-bold tracking-tight mb-4">Architected for Speed</h2>
-              <p className="text-[#434656] text-lg max-w-xl">Every feature is tuned for low latency and high cognitive efficiency.</p>
+              <h2 className="text-4xl font-bold tracking-tight mb-4">{t.features.title}</h2>
+              <p className="text-[#434656] text-lg max-w-xl">{t.features.subtitle}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <FeatureCard
                 icon={Layout}
-                title="Multi-tab Connection"
-                description="Switch between local, staging, and production clusters in milliseconds without losing context."
+                title={t.features.multiTab.title}
+                description={t.features.multiTab.desc}
                 className="lg:col-span-1"
               />
               <FeatureCard
                 icon={Database}
-                title="Full Data Support"
-                description="Strings, Lists, Sets, Hashes, and Streams handled with native UI editors."
+                title={t.features.dataSupport.title}
+                description={t.features.dataSupport.desc}
                 iconBg="bg-orange-100"
                 iconColor="text-orange-600"
               />
               <FeatureCard
                 icon={Zap}
-                title="Blazing Fast"
-                description="Native Tauri 2 core means zero overhead and instant startup times."
+                title={t.features.fast.title}
+                description={t.features.fast.desc}
                 iconBg="bg-blue-100"
                 iconColor="text-blue-600"
               />
@@ -165,12 +178,12 @@ export default function App() {
                   <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-6 text-white">
                     <Terminal size={24} />
                   </div>
-                  <h3 className="text-2xl font-bold mb-3">Built-in CLI</h3>
+                  <h3 className="text-2xl font-bold mb-3">{t.features.cli.title}</h3>
                   <p className="text-white/70 leading-relaxed mb-6">
-                    For the power users who prefer the prompt. Full command autocomplete and history support.
+                    {t.features.cli.desc}
                   </p>
                   <button className="flex items-center gap-2 text-[#0040e0] font-bold hover:underline">
-                    Learn more <ChevronRight size={16} />
+                    {t.features.cli.learnMore} <ChevronRight size={16} />
                   </button>
                 </div>
                 <div className="flex-2 font-mono text-sm bg-black/40 p-6 rounded-2xl w-full border border-white/5">
@@ -186,16 +199,16 @@ export default function App() {
               </motion.div>
 
               <FeatureCard
-                icon={Languages}
-                title="Multi-language"
-                description="Localized for global teams, supporting 12+ languages out of the box."
+                icon={LanguagesIcon}
+                title={t.features.multiLang.title}
+                description={t.features.multiLang.desc}
                 iconBg="bg-indigo-100"
                 iconColor="text-indigo-600"
               />
               <FeatureCard
                 icon={Palette}
-                title="Modern UI"
-                description="A design system that respects your focus and reduces ocular fatigue."
+                title={t.features.modernUI.title}
+                description={t.features.modernUI.desc}
                 iconBg="bg-purple-100"
                 iconColor="text-purple-600"
               />
@@ -214,7 +227,7 @@ export default function App() {
                   viewport={{ once: true }}
                   className="text-4xl md:text-5xl font-black mb-12 tracking-tight text-balance"
                 >
-                  Master Your Workflows
+                  {t.workflow.title}
                 </motion.h2>
 
                 <div className="space-y-12">
@@ -229,8 +242,8 @@ export default function App() {
                       1
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold mb-2">Connection Management</h4>
-                      <p className="text-[#434656] leading-relaxed">Securely store SSH tunnels and multi-node clusters with industry-standard encryption.</p>
+                      <h4 className="text-xl font-bold mb-2">{t.workflow.step1.title}</h4>
+                      <p className="text-[#434656] leading-relaxed">{t.workflow.step1.desc}</p>
                     </div>
                   </motion.div>
 
@@ -245,8 +258,8 @@ export default function App() {
                       2
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold mb-2">Data Browsing</h4>
-                      <p className="text-[#434656] leading-relaxed">Search through millions of keys with fuzzy filtering and advanced pattern matching.</p>
+                      <h4 className="text-xl font-bold mb-2">{t.workflow.step2.title}</h4>
+                      <p className="text-[#434656] leading-relaxed">{t.workflow.step2.desc}</p>
                     </div>
                   </motion.div>
                 </div>
@@ -260,7 +273,7 @@ export default function App() {
                     viewport={{ once: true }}
                     className="rounded-3xl shadow-2xl border border-black/5"
                     referrerPolicy="no-referrer"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuASKxgc3WL49rd57PgZ7VWFHTEBpzVCzgfUAGo0dR264Y9LAt78S5LLaaXhT3Vt0ZchTu1BjodLpuQq9E-MPk8m9aSU1iw2MIDR7oQctyX2lSYmqv7ou_ivd0Ce49JmhaHu4pn56_Z4Qfen0tGbWCIhcxVAuNhq4DK-dR5uavtty7OulvIBT42AGmY5l5_hWXQWS0rQ5Br1movKRTjF5-HH2KMIvU9xYBVls44kkFuSMAwEG4GpQbjTq4NfgIJhyzsfc54XIwpvuLM"
+                    src="assets/5.png"
                   />
                   <motion.img
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -269,7 +282,7 @@ export default function App() {
                     viewport={{ once: true }}
                     className="rounded-3xl shadow-2xl border border-black/5"
                     referrerPolicy="no-referrer"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8NF4R_QFipYOfnnCrEnR0DphxCws-SSBe4CcDBXg_zDPppcOhiL0sMn_JpJ8dy742uZoovogm1kiQLwcQelWjIID4aOiM_U8_fiISq4mlRR_bLUNeMmzDzhIyhzp8clYBmglEgDIvVzKg9lseR6y1r89TDMPR0zAZRnYBYKDdLEbuyLpwgiP2Q-_d5Jd-pO3RHbk7m7I8RNxIxpZ7n3FJyMnySvOb3NmMZMMw9ftIfo1ApQjnfZuCZiTpMlzL8Pi3dJiFSUEFowY"
+                    src="assets/3.png"
                   />
                 </div>
                 <div className="space-y-4">
@@ -280,11 +293,9 @@ export default function App() {
                     viewport={{ once: true }}
                     className="rounded-3xl shadow-2xl border border-black/5"
                     referrerPolicy="no-referrer"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuASQYiq_ERPPjJ1qZ0aoIhGCIZSQpbtXzIhDHejX_R3yI47Hstw0QSRdqqHRLBbMlYPzw6P_1A5lrHmRU7KmxGGl_4boJ6_Gx615Q4TIoqz66f_lqHE7A2pKxhjp-Qo7EZwMcXLPhzAVyI0Z4dUnJzJ1TVjXlvWkt12DC0GLn6bNXweaDLIGQmBFXo2hqJle-qzYDOWkU1xKuknmWkbH8y2yW85D9otncTKC9pHLry7BpSCTqTRkhCg1l9Wif6wUq5JhspThPqxYZs"
+                    src="assets/4.png"
                   />
-                  <div className="aspect-square bg-primary/5 rounded-3xl border border-primary/10 flex items-center justify-center">
-                    <ExternalLink className="text-primary opacity-20" size={64} />
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -294,7 +305,7 @@ export default function App() {
         {/* --- Tech Stack --- */}
         <section className="py-24 px-8 bg-white border-y border-black/5" id="tech">
           <div className="max-w-7xl mx-auto text-center">
-            <h3 className="text-sm font-bold text-[#0040e0] tracking-widest uppercase mb-16">Built with Modern Standards</h3>
+            <h3 className="text-sm font-bold text-[#0040e0] tracking-widest uppercase mb-16">{t.tech.title}</h3>
             <div className="flex flex-wrap justify-center items-center gap-12 md:gap-20">
               <TechIcon color="bg-[#61dafb]" label="React 19" />
               <TechIcon color="bg-[#3178c6]" label="TypeScript" />
@@ -307,30 +318,30 @@ export default function App() {
         {/* --- Download Section --- */}
         <section className="py-32 px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">Ready to upgrade your workflow?</h2>
-            <p className="text-xl text-[#434656] mb-16">Free for personal use, forever. Choose your platform.</p>
+            <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">{t.download.title}</h2>
+            <p className="text-xl text-[#434656] mb-16">{t.download.subtitle}</p>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               <DownloadCard
                 icon={Monitor}
-                platform="macOS"
-                details="Universal (Intel/M-series)"
+                platform={t.download.macOS}
+                details={t.download.macDetails}
                 version="v1.0 .dmg"
                 downloadUrl="pkg/RRdis_1.0.0_aarch64.dmg"
                 primary
               />
               <DownloadCard
                 icon={Monitor}
-                platform="Windows"
-                details="Windows 10, 11 (x64)"
+                platform={t.download.windows}
+                details={t.download.winDetails}
                 version="v1.0 .msi"
                 downloadUrl="pkg/RRdis_1.0.0_x64.msi"
               />
               <DownloadCard
                 icon={Terminal}
-                platform="Linux"
-                details="command-line only"
-                version="Coming Soon"
+                platform={t.download.linux}
+                details={t.download.linuxDetails}
+                version={t.download.comingSoon}
               />
             </div>
           </div>
@@ -344,16 +355,16 @@ export default function App() {
 
           <div className="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row justify-between items-center gap-16">
             <div className="max-w-2xl">
-              <h2 className="text-4xl font-black mb-6 tracking-tight">Open Source by Heart</h2>
+              <h2 className="text-4xl font-black mb-6 tracking-tight">{t.openSource.title}</h2>
               <p className="text-xl text-white/70 leading-relaxed mb-10">
-                RRdis is built under the MIT license. We believe in transparency and community-driven development. Join contributors making Redis management accessible to everyone.
+                {t.openSource.desc}
               </p>
               <div className="flex flex-wrap gap-6">
                 <a className="flex items-center gap-3 text-lg font-bold hover:text-[#0040e0] transition-colors" href="#">
-                  <Users size={24} /> Community
+                  <Users size={24} /> {t.openSource.community}
                 </a>
                 <a className="flex items-center gap-3 text-lg font-bold hover:text-[#0040e0] transition-colors" href="#">
-                  <Heart size={24} /> Donate
+                  <Heart size={24} /> {t.openSource.donate}
                 </a>
               </div>
             </div>
@@ -365,7 +376,7 @@ export default function App() {
               className="bg-white/5 backdrop-blur-xl p-12 rounded-[2.5rem] border border-white/10 text-center min-w-[280px]"
             >
               <h3 className="text-6xl font-black mb-2 text-[#0040e0]">3</h3>
-              <p className="text-sm uppercase tracking-[0.2em] font-bold text-white/50">GitHub Stars</p>
+              <p className="text-sm uppercase tracking-[0.2em] font-bold text-white/50">{t.openSource.stars}</p>
             </motion.div>
           </div>
         </section>
@@ -377,15 +388,25 @@ export default function App() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="text-2xl font-black text-[#191c1e]">RRdis</div>
             <div className="flex gap-8">
-              {['Features', 'Privacy', 'Terms', 'Support', 'GitHub'].map(item => (
-                <a key={item} className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
-                  {item}
-                </a>
-              ))}
+              <a className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
+                {t.footer.features}
+              </a>
+              <a className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
+                {t.footer.privacy}
+              </a>
+              <a className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
+                {t.footer.terms}
+              </a>
+              <a className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
+                {t.footer.support}
+              </a>
+              <a href="https://github.com/daichongdev/rrdis-web" target="_blank" rel="noopener noreferrer" className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
+                {t.footer.github}
+              </a>
             </div>
           </div>
           <div className="text-center text-[#191c1e]/40 text-sm">
-            © 2024 RRdis Desktop. Built for performance and precision.
+            {t.footer.copyright}
           </div>
         </div>
       </footer>
