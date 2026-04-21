@@ -109,7 +109,7 @@ export default function App() {
               transition={{ delay: 0.3 }}
               className="flex flex-col sm:flex-row justify-center gap-4 mb-20"
             >
-              <a href="pkg/RRdis.app" download className="hero-gradient text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-xl active:scale-95 hover:shadow-primary/30 transition-all">
+              <a href="pkg/RRdis_1.0.0_aarch64.dmg" download className="hero-gradient text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-xl active:scale-95 hover:shadow-primary/30 transition-all">
                 <Download size={20} />
                 {t.hero.downloadMac}
               </a>
