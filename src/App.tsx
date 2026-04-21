@@ -69,6 +69,21 @@ export default function App() {
   const [lang, setLang] = useState<Language>('en');
   const t = translations[lang];
 
+  const handleDownload = () => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMac = /mac|darwin/.test(userAgent);
+    const isWindows = /win/.test(userAgent);
+
+    if (isWindows) {
+      window.location.href = 'pkg/RRdis_1.0.0_x64.msi';
+    } else if (isMac) {
+      window.location.href = 'pkg/RRdis_1.0.0_aarch64.dmg';
+    } else {
+      // Default to macOS if unable to detect
+      window.location.href = 'pkg/RRdis_1.0.0_aarch64.dmg';
+    }
+  };
+
   return (
     <div className="min-h-screen font-sans selection:bg-primary/20">
       <Navbar lang={lang} setLang={setLang} t={t} />
@@ -109,10 +124,10 @@ export default function App() {
               transition={{ delay: 0.3 }}
               className="flex flex-col sm:flex-row justify-center gap-4 mb-20"
             >
-              <a href="pkg/RRdis_1.0.0_aarch64.dmg" download className="hero-gradient text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-xl active:scale-95 hover:shadow-primary/30 transition-all">
+              <button onClick={handleDownload} className="hero-gradient text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-xl active:scale-95 hover:shadow-primary/30 transition-all">
                 <Download size={20} />
                 {t.hero.downloadMac}
-              </a>
+              </button>
               <a href="https://github.com/daichongdev/rrdis-web" target="_blank" rel="noopener noreferrer" className="bg-white text-[#191c1e] border border-black/5 hover:bg-black/5 px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-all">
                 <Github size={20} />
                 {t.hero.starGithub}
