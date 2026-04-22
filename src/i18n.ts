@@ -10,7 +10,8 @@ export const translations = {
       demo: "Demo",
       tech: "Tech Stack",
       docs: "Docs",
-      download: "Download"
+      download: "Download",
+      versions: "Versions"
     },
     hero: {
       badge: "V2.0 NOW AVAILABLE",
@@ -88,6 +89,14 @@ export const translations = {
       support: "Support",
       github: "GitHub",
       copyright: "© 2024 RRdis Desktop. Built for performance and precision."
+    },
+    versions: {
+      title: "All Versions",
+      subtitle: "Download any version of RRdis for your platform",
+      releaseDate: "Released",
+      changelog: "What's New",
+      downloadFor: "Download for",
+      noDownload: "Not available for this platform"
     }
   },
   zh: {
@@ -96,7 +105,8 @@ export const translations = {
       demo: "演示",
       tech: "技术栈",
       docs: "文档",
-      download: "下载"
+      download: "下载",
+      versions: "版本列表"
     },
     hero: {
       badge: "V2.0 现已发布",
@@ -174,6 +184,14 @@ export const translations = {
       support: "技术支持",
       github: "GitHub",
       copyright: "© 2024 RRdis Desktop. 为性能和精准而生。"
+    },
+    versions: {
+      title: "所有版本",
+      subtitle: "下载适用于您平台的任意 RRdis 版本",
+      releaseDate: "发布日期",
+      changelog: "更新内容",
+      downloadFor: "下载",
+      noDownload: "该平台暂无可用版本"
     }
   }
 };
