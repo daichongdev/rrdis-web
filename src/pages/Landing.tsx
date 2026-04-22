@@ -147,7 +147,7 @@ export default function Landing() {
                 <img
                   alt="RRdis Interface"
                   className="rounded-xl w-full"
-                  src="assets/1.png"
+                  src="/rrdis-web/assets/1.png"
                 />
               </div>
             </motion.div>
@@ -289,7 +289,7 @@ export default function Landing() {
                     viewport={{ once: true }}
                     className="rounded-3xl shadow-2xl border border-black/5"
                     referrerPolicy="no-referrer"
-                    src="assets/5.png"
+                    src="/rrdis-web/assets/5.png"
                   />
                   <motion.img
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -298,7 +298,7 @@ export default function Landing() {
                     viewport={{ once: true }}
                     className="rounded-3xl shadow-2xl border border-black/5"
                     referrerPolicy="no-referrer"
-                    src="assets/3.png"
+                    src="/rrdis-web/assets/3.png"
                   />
                 </div>
                 <div className="space-y-4">
@@ -309,7 +309,7 @@ export default function Landing() {
                     viewport={{ once: true }}
                     className="rounded-3xl shadow-2xl border border-black/5"
                     referrerPolicy="no-referrer"
-                    src="assets/4.png"
+                    src="/rrdis-web/assets/4.png"
                   />
 
                 </div>
