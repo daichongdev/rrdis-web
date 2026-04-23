@@ -96,7 +96,9 @@ export const translations = {
       releaseDate: "Released",
       changelog: "What's New",
       downloadFor: "Download for",
-      noDownload: "Not available for this platform"
+      noDownload: "Not available for this platform",
+      paid: "Paid",
+      free: "Free"
     }
   },
   zh: {
@@ -191,7 +193,9 @@ export const translations = {
       releaseDate: "发布日期",
       changelog: "更新内容",
       downloadFor: "下载",
-      noDownload: "该平台暂无可用版本"
+      noDownload: "该平台暂无可用版本",
+      paid: "付费",
+      free: "免费"
     }
   }
 };

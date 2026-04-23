@@ -6,6 +6,7 @@
 export interface Version {
   version: string;
   date: string;
+  isPaid?: boolean;
   changelog: {
     en: string[];
     zh: string[];
@@ -26,6 +27,37 @@ export interface Version {
 }
 
 export const versions: Version[] = [
+  {
+    version: "2.0.0",
+    date: "2026-04-23",
+    isPaid: true,
+    changelog: {
+      en: [
+        "Fixed multi-window DB switching isolation issue",
+        "Added data syntax highlighting",
+        "Added JSON serialization display and copy functionality",
+        "Added ability to create any type of key data for current DB",
+        "Added rename, copy, and duplicate creation features",
+        "Bug fixes, UI optimization, and detail improvements"
+      ],
+      zh: [
+        "修复多窗口db切换隔离问题",
+        "增加数据高亮",
+        "增加数据json序列化展示与复制功能",
+        "增加为当前db创建任意类型key数据功能",
+        "增加修改rename、copy、创建副本功能",
+        "修复bug、优化ui、细节优化"
+      ]
+    },
+    downloads: {
+      macOS: {
+        arm64: "pkg/RRdis_2.0.0_aarch64.dmg"
+      },
+      windows: {
+        x64: "pkg/RRdis_2.0.0_x64.msi"
+      }
+    }
+  },
   {
     version: "1.1.0",
     date: "2026-04-22",

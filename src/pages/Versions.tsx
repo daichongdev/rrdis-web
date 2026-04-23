@@ -49,7 +49,18 @@ const VersionCard = ({ version, lang, t }: { version: typeof versions[0]; lang: 
       <div className="p-8">
         <div className="flex justify-between items-start mb-6">
           <div>
-            <h3 className="text-3xl font-bold mb-2">v{version.version}</h3>
+            <div className="flex items-center gap-3 mb-2">
+              <h3 className="text-3xl font-bold">v{version.version}</h3>
+              {version.isPaid ? (
+                <span className="bg-gradient-to-r from-[#0040e0] to-[#2e5bff] text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  {t.versions.paid}
+                </span>
+              ) : (
+                <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  {t.versions.free}
+                </span>
+              )}
+            </div>
             <div className="flex items-center gap-2 text-[#434656]">
               <Calendar size={16} />
               <span className="text-sm">{t.versions.releaseDate}: {version.date}</span>
