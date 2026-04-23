@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion } from "motion/react";
-import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Download,
@@ -21,7 +21,8 @@ import {
   ChevronRight,
   ExternalLink,
   Github,
-  Globe
+  Globe,
+  ChevronLeft
 } from "lucide-react";
 import { translations, type Language } from "../i18n";
 
@@ -69,6 +70,33 @@ const FeatureCard = ({ icon: Icon, title, description, className = "", iconBg = 
 export default function Landing() {
   const [lang, setLang] = useState<Language>('en');
   const t = translations[lang];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const heroImages = [
+    '/rrdis-web/assets/1.png',
+    '/rrdis-web/assets/6.png',
+    '/rrdis-web/assets/7.png',
+    '/rrdis-web/assets/8.png',
+    '/rrdis-web/assets/9.png',
+    '/rrdis-web/assets/10.png',
+    '/rrdis-web/assets/11.png',
+    '/rrdis-web/assets/12.png'
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
+
+  const goToPrevious = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+  };
+
+  const goToNext = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+  };
 
   const handleDownload = () => {
     const userAgent = navigator.userAgent.toLowerCase();
@@ -135,7 +163,7 @@ export default function Landing() {
               </a>
             </motion.div>
 
-            {/* --- Hero Image --- */}
+            {/* --- Hero Image Carousel --- */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -143,12 +171,57 @@ export default function Landing() {
               className="relative max-w-6xl mx-auto"
             >
               <div className="absolute -inset-1 bg-gradient-to-r from-[#0040e0] to-[#2e5bff] blur-[120px] opacity-20"></div>
-              <div className="relative bg-white rounded-2xl shadow-2xl p-2 md:p-3 overflow-hidden border border-black/5">
-                <img
-                  alt="RRdis Interface"
-                  className="rounded-xl w-full"
-                  src="/rrdis-web/assets/1.png"
-                />
+              <div className="relative rounded-2xl shadow-2xl overflow-hidden">
+                <div className="relative rounded-xl overflow-hidden group">
+                  <AnimatePresence initial={false} custom={currentImageIndex}>
+                    <motion.img
+                      key={currentImageIndex}
+                      alt="RRdis Interface"
+                      className="rounded-xl w-full absolute inset-0"
+                      src={heroImages[currentImageIndex]}
+                      initial={{ x: '100%' }}
+                      animate={{ x: 0 }}
+                      exit={{ x: '-100%' }}
+                      transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    />
+                  </AnimatePresence>
+                  <img
+                    alt="RRdis Interface Placeholder"
+                    className="rounded-xl w-full invisible"
+                    src={heroImages[0]}
+                  />
+
+                  {/* Navigation Buttons */}
+                  <button
+                    onClick={goToPrevious}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft size={24} className="text-[#191c1e]" />
+                  </button>
+                  <button
+                    onClick={goToNext}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight size={24} className="text-[#191c1e]" />
+                  </button>
+                </div>
+
+                {/* Carousel Indicators */}
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-10">
+                  {heroImages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`h-2 rounded-full transition-all ${index === currentImageIndex
+                        ? 'w-8 bg-white shadow-lg'
+                        : 'w-2 bg-white/50 hover:bg-white/80'
+                        }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
               </div>
             </motion.div>
           </div>
