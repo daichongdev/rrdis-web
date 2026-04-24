@@ -101,23 +101,19 @@ const VersionCard = ({ version, lang, t }: { version: typeof versions[0]; lang: 
               t={t}
             />
           )}
-          {version.downloads.windows && (
+          {version.downloads.windows?.msi && (
             <DownloadButton
-              platform="Windows"
-              url={version.downloads.windows.x64}
+              platform="Windows (MSI)"
+              url={version.downloads.windows.msi}
               t={t}
             />
           )}
-          {version.downloads.linux ? (
+          {version.downloads.windows?.exe && (
             <DownloadButton
-              platform="Linux"
-              url={version.downloads.linux.x64 || version.downloads.linux.arm64}
+              platform="Windows (EXE)"
+              url={version.downloads.windows.exe}
               t={t}
             />
-          ) : (
-            <div className="bg-[#f2f4f6] p-4 rounded-xl text-center text-[#434656] text-sm">
-              {t.versions.noDownload}
-            </div>
           )}
         </div>
       </div>

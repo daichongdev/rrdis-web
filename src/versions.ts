@@ -17,7 +17,8 @@ export interface Version {
       x64?: string;
     };
     windows?: {
-      x64?: string;
+      msi?: string;
+      exe?: string;
     };
     linux?: {
       x64?: string;
@@ -38,7 +39,12 @@ export const versions: Version[] = [
         "Added JSON serialization display and copy functionality",
         "Added ability to create any type of key data for current DB",
         "Added rename, copy, and duplicate creation features",
-        "Bug fixes, UI optimization, and detail improvements"
+        "Optimized pagination display",
+        "Fixed duplicate entry issue in ZSET & SET",
+        "Added alternating row colors and selection effect for tables",
+        "Added recursive JSON display",
+        "Optimized CLI page with command auto-completion support",
+        "Bug fixes"
       ],
       zh: [
         "修复多窗口db切换隔离问题",
@@ -46,7 +52,12 @@ export const versions: Version[] = [
         "增加数据json序列化展示与复制功能",
         "增加为当前db创建任意类型key数据功能",
         "增加修改rename、copy、创建副本功能",
-        "修复bug、优化ui、细节优化"
+        "优化分页展示",
+        "优化zset&set添加重复问题",
+        "table隔行变色，增加选中效果",
+        "增加json递归显示",
+        "优化cli页面，支持命令自动补全",
+        "bug修复"
       ]
     },
     downloads: {
@@ -54,7 +65,8 @@ export const versions: Version[] = [
         arm64: "pkg/RRdis_2.0.0_aarch64.dmg"
       },
       windows: {
-        x64: "pkg/RRdis_2.0.0_x64.msi"
+        msi: "pkg/RRdis_2.0.0_x64.msi",
+        exe: "pkg/RRdis_2.0.0_x64-setup.exe"
       }
     }
   },
@@ -78,7 +90,7 @@ export const versions: Version[] = [
         arm64: "pkg/RRdis_1.1.0_aarch64.dmg"
       },
       windows: {
-        x64: "pkg/RRdis_1.1.0_x64.msi"
+        msi: "pkg/RRdis_1.1.0_x64.msi"
       }
     }
   },
@@ -108,7 +120,7 @@ export const versions: Version[] = [
         arm64: "pkg/RRdis_1.0.0_aarch64.dmg"
       },
       windows: {
-        x64: "pkg/RRdis_1.0.0_x64.msi"
+        msi: "pkg/RRdis_1.0.0_x64.msi"
       }
     }
   }
