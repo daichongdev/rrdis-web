@@ -44,6 +44,10 @@ export const versions: Version[] = [
         "Added alternating row colors and selection effect for tables",
         "Added recursive JSON display",
         "Optimized CLI page with command auto-completion support",
+        "Optimized keys list display with batch loading via SCAN for large datasets",
+        "Added streaming data loading for string type to prevent lag with data over 1MB",
+        "Modified large data truncation display and streaming loading in details for all types",
+        "Optimized connection with new keep-alive mechanism",
         "Bug fixes"
       ],
       zh: [
@@ -57,6 +61,10 @@ export const versions: Version[] = [
         "table隔行变色，增加选中效果",
         "增加json递归显示",
         "优化cli页面，支持命令自动补全",
+        "优化keyslist展示，通过scan在大数据情况下分批加载",
+        "string类型中增加流式数据加载，防止数据在1mb以上时出现卡顿的情况",
+        "修改各种类型下大数据的切断展示和详情中流式加载",
+        "优化链接，新增保活机制",
         "bug修复"
       ]
     },
