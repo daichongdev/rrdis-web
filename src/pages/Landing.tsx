@@ -5,7 +5,7 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Download,
   Star,
@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { translations, type Language } from "../i18n";
 
-const Navbar = ({ lang, setLang, t }: { lang: Language; setLang: (lang: Language) => void; t: typeof translations.en }) => (
+const Navbar = ({ lang, setLang, t, navigate }: { lang: Language; setLang: (lang: Language) => void; t: typeof translations.en; navigate: any }) => (
   <nav className="sticky top-0 w-full z-50 bg-[#f7f9fb]/80 backdrop-blur-md border-b border-black/5">
     <div className="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
       <Link to="/" className="text-2xl font-black tracking-tighter text-[#191c1e]">RRdis</Link>
@@ -44,7 +44,7 @@ const Navbar = ({ lang, setLang, t }: { lang: Language; setLang: (lang: Language
           <Globe size={18} />
           {lang === 'en' ? '中文' : 'EN'}
         </button>
-        <a href="#download" className="hero-gradient text-white px-6 py-2.5 rounded-lg font-semibold active:scale-95 duration-200 transition-all shadow-md">
+        <a href="#download" className="hero-gradient text-white px-6 py-2.5 rounded-lg font-semibold active:scale-95 duration-200 transition-all shadow-md" onClick={(e) => { e.preventDefault(); navigate('/versions'); }}>
           {t.nav.download}
         </a>
       </div>
@@ -71,6 +71,7 @@ export default function Landing() {
   const [lang, setLang] = useState<Language>('en');
   const t = translations[lang];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const navigate = useNavigate();
 
   const heroImages = [
     '/rrdis-web/assets/1.png',
@@ -99,23 +100,12 @@ export default function Landing() {
   };
 
   const handleDownload = () => {
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isMac = /mac|darwin/.test(userAgent);
-    const isWindows = /win/.test(userAgent);
-
-    if (isWindows) {
-      window.location.href = 'pkg/RRdis_1.0.0_x64.msi';
-    } else if (isMac) {
-      window.location.href = 'pkg/RRdis_1.0.0_aarch64.dmg';
-    } else {
-      // Default to macOS if unable to detect
-      window.location.href = 'pkg/RRdis_1.0.0_aarch64.dmg';
-    }
+    navigate('/versions');
   };
 
   return (
     <div className="min-h-screen font-sans selection:bg-primary/20">
-      <Navbar lang={lang} setLang={setLang} t={t} />
+      <Navbar lang={lang} setLang={setLang} t={t} navigate={navigate} />
 
       <main>
         {/* --- Hero Section --- */}
@@ -416,7 +406,7 @@ export default function Landing() {
                 platform={t.download.macOS}
                 details={t.download.macDetails}
                 version="v1.0 .dmg"
-                downloadUrl="pkg/RRdis_1.0.0_aarch64.dmg"
+                navigate={navigate}
                 primary
               />
               <DownloadCard
@@ -424,13 +414,14 @@ export default function Landing() {
                 platform={t.download.windows}
                 details={t.download.winDetails}
                 version="v1.0 .msi"
-                downloadUrl="pkg/RRdis_1.0.0_x64.msi"
+                navigate={navigate}
               />
               <DownloadCard
                 icon={Terminal}
                 platform={t.download.linux}
                 details={t.download.linuxDetails}
                 version={t.download.comingSoon}
+                navigate={navigate}
               />
             </div>
           </div>
@@ -513,25 +504,31 @@ const TechIcon = ({ color, label }: any) => (
   </motion.div>
 );
 
-const DownloadCard = ({ icon: Icon, platform, details, version, downloadUrl, primary }: any) => (
-  <motion.div
-    whileHover={{ y: -8 }}
-    className="bg-white p-10 rounded-[2.5rem] border border-black/5 shadow-sm hover:shadow-2xl transition-all"
-  >
-    <div className="w-20 h-20 bg-[#eceef0] rounded-3xl flex items-center justify-center mx-auto mb-8 text-[#191c1e]">
-      <Icon size={32} />
-    </div>
-    <h4 className="text-2xl font-bold mb-2">{platform}</h4>
-    <p className="text-[#434656] text-sm mb-10">{details}</p>
-    <a
-      href={downloadUrl}
-      download
-      className={`w-full py-4 rounded-xl font-bold transition-all block text-center ${primary
-        ? "hero-gradient text-white shadow-lg shadow-primary/30"
-        : "bg-[#f2f4f6] text-[#191c1e] hover:bg-[#eceef0]"
+const DownloadCard = ({ icon: Icon, platform, details, version, navigate, primary }: any) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.div
+      whileHover={{ y: -8 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="bg-white p-10 rounded-[2.5rem] border border-black/5 shadow-sm hover:shadow-2xl transition-all"
+    >
+      <div className="w-20 h-20 bg-[#eceef0] rounded-3xl flex items-center justify-center mx-auto mb-8 text-[#191c1e]">
+        <Icon size={32} />
+      </div>
+      <h4 className="text-2xl font-bold mb-2">{platform}</h4>
+      <p className="text-[#434656] text-sm mb-10">{details}</p>
+      <button
+        onClick={() => navigate('/versions')}
+        className={`w-full py-4 rounded-xl font-bold transition-all block text-center ${
+          isHovered
+            ? "hero-gradient text-white shadow-lg shadow-primary/30"
+            : "bg-[#f2f4f6] text-[#191c1e] hover:bg-[#eceef0]"
         }`}>
-      {version}
-    </a>
-  </motion.div>
-);
+        {version}
+      </button>
+    </motion.div>
+  );
+};
 
