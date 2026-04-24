@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![RRdis Logo](https://via.placeholder.com/150x150?text=RRdis)
+![RRdis Logo](public/assets/logo.png)
 
 **A blazing-fast, feature-rich Redis desktop client built for modern developers**
 
