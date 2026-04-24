@@ -105,10 +105,10 @@ MIT License - Open source by heart. See [LICENSE](LICENSE) for details.
 
 ### 🔗 Links
 
-- [Official Website](https://yourdomain.com)
-- [Documentation](https://docs.yourdomain.com)
-- [Issue Tracker](https://github.com/yourusername/rrdis/issues)
-- [Discussions](https://github.com/yourusername/rrdis/discussions)
+- [Official Website](https://daichongdev.github.io/rrdis-web/)
+- [Documentation](https://daichongdev.github.io/rrdis-web/)
+- [Issue Tracker](https://github.com/daichongdev/rrdis-web/issues)
+- [Discussions](https://github.com/daichongdev/rrdis-web/issues)
 
 ---
 
@@ -201,7 +201,7 @@ MIT 协议 - 用心开源。详见 [LICENSE](LICENSE) 文件。
 
 ### 🔗 相关链接
 
-- [官方网站](https://yourdomain.com)
-- [使用文档](https://docs.yourdomain.com)
-- [问题反馈](https://github.com/yourusername/rrdis/issues)
-- [讨论区](https://github.com/yourusername/rrdis/discussions)
+- [官方网站](https://daichongdev.github.io/rrdis-web/)
+- [使用文档](https://daichongdev.github.io/rrdis-web/)
+- [问题反馈](https://github.com/daichongdev/rrdis-web/issues)
+- [讨论区](https://github.com/daichongdev/rrdis-web/issues)
