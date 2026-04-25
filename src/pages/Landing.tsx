@@ -35,6 +35,7 @@ const Navbar = ({ lang, setLang, t, navigate }: { lang: Language; setLang: (lang
         <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#demo">{t.nav.demo}</a>
         <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#tech">{t.nav.tech}</a>
         <Link className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" to="/versions">{t.nav.versions}</Link>
+        <Link className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" to="/purchase">{t.nav.purchase}</Link>
       </div>
       <div className="flex items-center gap-4">
         <button
@@ -42,7 +43,7 @@ const Navbar = ({ lang, setLang, t, navigate }: { lang: Language; setLang: (lang
           className="flex items-center gap-2 text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors px-3 py-2 rounded-lg hover:bg-black/5"
         >
           <Globe size={18} />
-          {lang === 'en' ? '中文' : 'EN'}
+          {lang === 'en' ? 'EN' : '中文'}
         </button>
         <a href="#download" className="hero-gradient text-white px-6 py-2.5 rounded-lg font-semibold active:scale-95 duration-200 transition-all shadow-md" onClick={(e) => { e.preventDefault(); navigate('/versions'); }}>
           {t.nav.download}
@@ -68,10 +69,18 @@ const FeatureCard = ({ icon: Icon, title, description, className = "", iconBg = 
 );
 
 export default function Landing() {
-  const [lang, setLang] = useState<Language>('en');
+  const [lang, setLang] = useState<Language>(() => {
+    const saved = localStorage.getItem('language');
+    return (saved === 'en' || saved === 'zh') ? saved : 'en';
+  });
   const t = translations[lang];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
+
+  const handleSetLang = (newLang: Language) => {
+    setLang(newLang);
+    localStorage.setItem('language', newLang);
+  };
 
   const heroImages = [
     '/rrdis-web/assets/1.png',
@@ -105,7 +114,7 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen font-sans selection:bg-primary/20">
-      <Navbar lang={lang} setLang={setLang} t={t} navigate={navigate} />
+      <Navbar lang={lang} setLang={handleSetLang} t={t} navigate={navigate} />
 
       <main>
         {/* --- Hero Section --- */}

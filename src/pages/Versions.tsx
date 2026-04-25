@@ -19,6 +19,7 @@ const Navbar = ({ lang, setLang, t }: { lang: Language; setLang: (lang: Language
         <Link className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" to="/#demo">{t.nav.demo}</Link>
         <Link className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" to="/#tech">{t.nav.tech}</Link>
         <Link className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" to="/versions">{t.nav.versions}</Link>
+        <Link className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" to="/purchase">{t.nav.purchase}</Link>
       </div>
       <div className="flex items-center gap-4">
         <button
@@ -26,7 +27,7 @@ const Navbar = ({ lang, setLang, t }: { lang: Language; setLang: (lang: Language
           className="flex items-center gap-2 text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors px-3 py-2 rounded-lg hover:bg-black/5"
         >
           <Globe size={18} />
-          {lang === 'en' ? '中文' : 'EN'}
+          {lang === 'en' ? 'EN' : '中文'}
         </button>
         <Link to="/#download" className="hero-gradient text-white px-6 py-2.5 rounded-lg font-semibold active:scale-95 duration-200 transition-all shadow-md">
           {t.nav.download}
@@ -143,12 +144,20 @@ const DownloadButton = ({ platform, url, t }: { platform: string; url?: string; 
 };
 
 export default function Versions() {
-  const [lang, setLang] = useState<Language>('en');
+  const [lang, setLang] = useState<Language>(() => {
+    const saved = localStorage.getItem('language');
+    return (saved === 'en' || saved === 'zh') ? saved : 'en';
+  });
   const t = translations[lang];
+
+  const handleSetLang = (newLang: Language) => {
+    setLang(newLang);
+    localStorage.setItem('language', newLang);
+  };
 
   return (
     <div className="min-h-screen font-sans selection:bg-primary/20 bg-[#f7f9fb]">
-      <Navbar lang={lang} setLang={setLang} t={t} />
+      <Navbar lang={lang} setLang={handleSetLang} t={t} />
 
       <main className="py-20 px-8">
         <div className="max-w-5xl mx-auto">

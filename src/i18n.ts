@@ -11,7 +11,8 @@ export const translations = {
       tech: "Tech Stack",
       docs: "Docs",
       download: "Download",
-      versions: "Versions"
+      versions: "Versions",
+      purchase: "Purchase"
     },
     hero: {
       badge: "V2.0 NOW AVAILABLE",
@@ -99,6 +100,57 @@ export const translations = {
       noDownload: "Not available for this platform",
       paid: "Paid",
       free: "Free"
+    },
+    purchase: {
+      badge: "Limited Time Offer",
+      title: "Choose Your ",
+      titleHighlight: "Plan",
+      subtitle: "Unlock all RRdis features for a more efficient Redis management experience",
+      newUser: "New User Trial",
+      quarterly: "Quarterly Plan",
+      yearly: "Annual Plan",
+      lifetime: "Lifetime License",
+      week: "7 days",
+      months3: "3 months",
+      year: "1 year",
+      forever: "Forever",
+      newUserBadge: "Special Offer",
+      bestValue: "Best Value",
+      features: {
+        fullAccess: "Full feature access",
+        days7: "7-day usage period",
+        days90: "90-day usage period",
+        days365: "365-day usage period",
+        lifetimeAccess: "Lifetime access",
+        support: "Technical support",
+        prioritySupport: "Priority technical support",
+        lifetimeSupport: "Lifetime technical support",
+        updates: "Free updates",
+        lifetimeUpdates: "Lifetime free updates",
+        dedicatedService: "Dedicated customer service",
+        earlyAccess: "Early access to new features"
+      },
+      buyButton: "Purchase on Xianyu",
+      buyHint: "Click to open Xianyu purchase page",
+      faq: {
+        title: "Frequently Asked Questions",
+        q1: {
+          question: "How to activate the serial number?",
+          answer: "After purchase, you will receive a serial number. Open Settings in the RRdis app, find the 'Activate' option, and enter the serial number to complete activation."
+        },
+        q2: {
+          question: "What payment methods are supported?",
+          answer: "Currently purchased through Xianyu platform, supporting Alipay, WeChat Pay and other payment methods."
+        },
+        q3: {
+          question: "Can I get a refund?",
+          answer: "We recommend trying the trial version first. If you encounter technical issues that prevent usage, please contact customer service for assistance or refund."
+        },
+        q4: {
+          question: "Can one serial number be used on multiple devices?",
+          answer: "Each serial number is limited to a single device. If you need to use it on multiple devices, please purchase multiple serial numbers."
+        }
+      }
     }
   },
   zh: {
@@ -108,7 +160,8 @@ export const translations = {
       tech: "技术栈",
       docs: "文档",
       download: "下载",
-      versions: "版本列表"
+      versions: "版本列表",
+      purchase: "购买"
     },
     hero: {
       badge: "V2.0 现已发布",
@@ -196,6 +249,57 @@ export const translations = {
       noDownload: "该平台暂无可用版本",
       paid: "付费",
       free: "免费"
+    },
+    purchase: {
+      badge: "限时优惠",
+      title: "选择适合你的",
+      titleHighlight: "订阅方案",
+      subtitle: "解锁 RRdis 全部功能，享受更高效的 Redis 管理体验",
+      newUser: "新人体验",
+      quarterly: "季度套餐",
+      yearly: "年度套餐",
+      lifetime: "永久授权",
+      week: "7天",
+      months3: "3个月",
+      year: "1年",
+      forever: "永久",
+      newUserBadge: "新人钜惠",
+      bestValue: "最超值",
+      features: {
+        fullAccess: "完整功能体验",
+        days7: "7天使用期限",
+        days90: "90天使用期限",
+        days365: "365天使用期限",
+        lifetimeAccess: "永久使用权限",
+        support: "技术支持",
+        prioritySupport: "优先技术支持",
+        lifetimeSupport: "终身技术支持",
+        updates: "免费更新",
+        lifetimeUpdates: "终身免费更新",
+        dedicatedService: "专属客服",
+        earlyAccess: "优先新功能体验"
+      },
+      buyButton: "前往闲鱼购买序列号",
+      buyHint: "点击后将跳转到闲鱼购买页面",
+      faq: {
+        title: "常见问题",
+        q1: {
+          question: "如何激活序列号？",
+          answer: "购买后，您将收到一个序列号。在 RRdis 应用中打开设置，找到\"激活\"选项，输入序列号即可完成激活。"
+        },
+        q2: {
+          question: "支持哪些支付方式？",
+          answer: "目前通过闲鱼平台购买，支持支付宝、微信支付等多种支付方式。"
+        },
+        q3: {
+          question: "可以退款吗？",
+          answer: "建议先购买体验版试用。如遇到技术问题无法使用，请联系客服协助解决或申请退款。"
+        },
+        q4: {
+          question: "一个序列号可以在多台设备使用吗？",
+          answer: "每个序列号仅限单台设备使用。如需在多台设备使用，请购买多个序列号。"
+        }
+      }
     }
   }
 };
