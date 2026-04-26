@@ -29,6 +29,54 @@ export interface Version {
 
 export const versions: Version[] = [
   {
+    version: "2.1.0",
+    date: "2026-04-26",
+    isPaid: true,
+    changelog: {
+      en: [
+        "White screen issue fixed",
+        "Added React error boundary to catch crashes",
+        "Implemented connection heartbeat keep-alive mechanism (PING every 30 seconds)",
+        "Automatic reconnection mechanism, detects connection errors and auto-recovers",
+        "Detailed error log tracking",
+        "Data viewing experience optimization",
+        "All data types now use Monaco Editor",
+        "Smart detection and formatting for JSON, XML, HTML, SQL, YAML, Markdown",
+        "Removed data size limitation, supports viewing data of any size",
+        "Removed fullscreen modal, simplified interaction",
+        "Performance optimization",
+        "Use SCAN instead of KEYS command (non-blocking)",
+        "Pipeline batch get key types",
+        "Multi-level nested tree structure display"
+      ],
+      zh: [
+        "白屏问题修复",
+        "添加 React 错误边界捕获崩溃",
+        "实现连接心跳保活机制（每 30 秒 PING）",
+        "自动重连机制，检测连接错误并自动恢复",
+        "详细的错误日志追踪",
+        "数据查看体验优化",
+        "所有数据类型统一使用 Monaco Editor",
+        "智能检测并格式化 JSON、XML、HTML、SQL、YAML、Markdown",
+        "移除数据大小判断，支持任意大小数据查看",
+        "移除全屏查看模态框，简化交互",
+        "性能优化",
+        "使用 SCAN 替代 KEYS 命令（非阻塞）",
+        "Pipeline 批量获取 key 类型",
+        "多层嵌套树形结构展示"
+      ]
+    },
+    downloads: {
+      macOS: {
+        arm64: "pkg/RRdis_2.1.0_aarch64.dmg"
+      },
+      windows: {
+        msi: "pkg/RRdis_2.1.0_x64.msi",
+        exe: "pkg/RRdis_2.1.0_x64-setup.exe"
+      }
+    }
+  },
+  {
     version: "2.0.0",
     date: "2026-04-23",
     isPaid: true,

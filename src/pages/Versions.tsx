@@ -172,6 +172,9 @@ export default function Versions() {
             <p className="text-xl text-[#434656] max-w-2xl mx-auto">
               {t.versions.subtitle}
             </p>
+            <div className="mt-6 inline-block bg-blue-500/10 border border-blue-500/30 rounded-lg px-6 py-3">
+              <p className="text-blue-600 text-sm font-medium">💡 {t.versions.purchaseNotice}</p>
+            </div>
           </motion.div>
 
           <div className="space-y-6">

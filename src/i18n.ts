@@ -94,6 +94,7 @@ export const translations = {
     versions: {
       title: "All Versions",
       subtitle: "Download any version of RRdis for your platform",
+      purchaseNotice: "💡 Purchase once, use multiple versions for free. All paid versions are included with a single license.",
       releaseDate: "Released",
       changelog: "What's New",
       downloadFor: "Download for",
@@ -243,6 +244,7 @@ export const translations = {
     versions: {
       title: "所有版本",
       subtitle: "下载适用于您平台的任意 RRdis 版本",
+      purchaseNotice: "💡 购买一次，免费使用多个版本。单次购买即可使用所有付费版本。",
       releaseDate: "发布日期",
       changelog: "更新内容",
       downloadFor: "下载",
