@@ -19,6 +19,7 @@ export const translations = {
       title: "Modern Redis Management, ",
       titleHighlight: "Simplified",
       subtitle: "A high-performance desktop client designed for architects. Manage your data clusters with precision, speed, and a beautiful interface that stays out of your way.",
+      securityNotice: "🔒 All credentials stored locally. No backend, no cloud sync.",
       downloadMac: "Download for macOS",
       starGithub: "Star on GitHub"
     },
@@ -169,6 +170,7 @@ export const translations = {
       title: "现代化 Redis 管理，",
       titleHighlight: "化繁为简",
       subtitle: "专为架构师设计的高性能桌面客户端。以精准、快速和优雅的界面管理您的数据集群。",
+      securityNotice: "🔒 所有账号密码本地存储，无后端调用，无云同步。",
       downloadMac: "下载 macOS 版本",
       starGithub: "在 GitHub 上点赞"
     },
