@@ -46,39 +46,82 @@ const PricingCard = ({
   highlight = false
 }: any) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isHovered) return;
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateXValue = (y - centerY) / 15;
+    const rotateYValue = (centerX - x) / 15;
+    setRotateX(rotateXValue);
+    setRotateY(rotateYValue);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setRotateX(0);
+    setRotateY(0);
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -8 }}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={`relative bg-white p-8 rounded-3xl shadow-sm border transition-all duration-300 ${
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) ${isHovered ? 'translateZ(20px)' : ''}`,
+        transition: 'transform 0.1s ease-out'
+      }}
+      className={`relative bg-white p-8 rounded-3xl shadow-sm border transition-all duration-300 overflow-hidden group ${
         highlight
           ? 'border-[#0040e0] shadow-xl shadow-primary/10'
-          : 'border-black/[0.03] hover:shadow-xl hover:border-black/[0.08]'
+          : 'border-black/[0.03] hover:shadow-2xl hover:border-black/[0.08]'
       }`}
     >
+      {/* Animated gradient overlay */}
+      <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+        highlight
+          ? 'from-[#0040e0]/10 via-[#2e5bff]/5 to-transparent'
+          : 'from-[#0040e0]/5 via-transparent to-[#2e5bff]/5'
+      }`} />
+
+      {/* Shimmer effect */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+      </div>
+
       {badge && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#0040e0] to-[#2e5bff] text-white text-sm font-bold shadow-lg">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, type: "spring" }}
+          className="absolute top-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-[#0040e0] to-[#2e5bff] text-white text-xs font-bold shadow-lg animate-glow whitespace-nowrap z-20"
+        >
           {badge}
-        </div>
+        </motion.div>
       )}
 
-      <div className={`w-16 h-16 rounded-2xl ${highlight ? 'bg-[#0040e0]' : 'bg-[#eceef0]'} flex items-center justify-center mb-6 mx-auto`}>
+      <div className={`w-16 h-16 rounded-2xl ${highlight ? 'bg-[#0040e0]' : 'bg-[#eceef0]'} flex items-center justify-center mb-6 mx-auto relative z-10 group-hover:scale-110 transition-transform duration-300 ${badge ? 'mt-8' : ''}`}>
         <Icon size={32} className={highlight ? 'text-white' : 'text-[#0040e0]'} />
       </div>
 
-      <h3 className="text-2xl font-bold text-center mb-2">{title}</h3>
+      <h3 className="text-2xl font-bold text-center mb-2 relative z-10">{title}</h3>
 
-      <div className="text-center mb-6">
+      <div className="text-center mb-6 relative z-10">
         <span className="text-5xl font-black text-[#0040e0]">¥{price}</span>
         <span className="text-[#434656] ml-2">/ {period}</span>
       </div>
 
-      <ul className="space-y-3 mb-8">
+      <ul className="space-y-3 mb-8 relative z-10">
         {features.map((feature: string, index: number) => (
           <li key={index} className="flex items-start gap-3">
             <Check size={20} className="text-[#0040e0] flex-shrink-0 mt-0.5" />
@@ -174,6 +217,11 @@ export default function Purchase() {
       <main>
         {/* Hero Section */}
         <section className="relative pt-20 pb-16 px-8 overflow-hidden">
+          {/* Animated Background */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-10 right-1/4 w-96 h-96 bg-[#0040e0]/10 rounded-full blur-3xl animate-float" />
+            <div className="absolute bottom-10 left-1/4 w-96 h-96 bg-[#2e5bff]/10 rounded-full blur-3xl animate-float-delayed" />
+          </div>
           <div className="max-w-7xl mx-auto text-center relative z-10">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -235,8 +283,13 @@ export default function Purchase() {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-24 px-8">
-          <div className="max-w-4xl mx-auto">
+        <section className="py-24 px-8 relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 left-0 w-72 h-72 bg-[#0040e0]/5 rounded-full blur-3xl animate-pulse-slow" />
+            <div className="absolute bottom-1/4 right-0 w-72 h-72 bg-[#2e5bff]/5 rounded-full blur-3xl animate-pulse-slow" />
+          </div>
+          <div className="max-w-4xl mx-auto relative z-10">
             <h2 className="text-4xl font-bold text-center mb-12">{t.purchase.faq.title}</h2>
 
             <div className="space-y-6">
@@ -244,10 +297,12 @@ export default function Purchase() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="bg-white p-8 rounded-2xl shadow-sm border border-black/[0.03]"
+                whileHover={{ scale: 1.02 }}
+                className="bg-white p-8 rounded-2xl shadow-sm border border-black/[0.03] hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
               >
-                <h3 className="text-xl font-bold mb-3">{t.purchase.faq.q1.question}</h3>
-                <p className="text-[#434656] leading-relaxed">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0040e0]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <h3 className="text-xl font-bold mb-3 relative z-10">{t.purchase.faq.q1.question}</h3>
+                <p className="text-[#434656] leading-relaxed relative z-10">
                   {t.purchase.faq.q1.answer}
                 </p>
               </motion.div>
@@ -257,10 +312,12 @@ export default function Purchase() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="bg-white p-8 rounded-2xl shadow-sm border border-black/[0.03]"
+                whileHover={{ scale: 1.02 }}
+                className="bg-white p-8 rounded-2xl shadow-sm border border-black/[0.03] hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
               >
-                <h3 className="text-xl font-bold mb-3">{t.purchase.faq.q2.question}</h3>
-                <p className="text-[#434656] leading-relaxed">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#2e5bff]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <h3 className="text-xl font-bold mb-3 relative z-10">{t.purchase.faq.q2.question}</h3>
+                <p className="text-[#434656] leading-relaxed relative z-10">
                   {t.purchase.faq.q2.answer}
                 </p>
               </motion.div>
@@ -270,10 +327,12 @@ export default function Purchase() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="bg-white p-8 rounded-2xl shadow-sm border border-black/[0.03]"
+                whileHover={{ scale: 1.02 }}
+                className="bg-white p-8 rounded-2xl shadow-sm border border-black/[0.03] hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
               >
-                <h3 className="text-xl font-bold mb-3">{t.purchase.faq.q3.question}</h3>
-                <p className="text-[#434656] leading-relaxed">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0040e0]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <h3 className="text-xl font-bold mb-3 relative z-10">{t.purchase.faq.q3.question}</h3>
+                <p className="text-[#434656] leading-relaxed relative z-10">
                   {t.purchase.faq.q3.answer}
                 </p>
               </motion.div>
@@ -283,10 +342,12 @@ export default function Purchase() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="bg-white p-8 rounded-2xl shadow-sm border border-black/[0.03]"
+                whileHover={{ scale: 1.02 }}
+                className="bg-white p-8 rounded-2xl shadow-sm border border-black/[0.03] hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
               >
-                <h3 className="text-xl font-bold mb-3">{t.purchase.faq.q4.question}</h3>
-                <p className="text-[#434656] leading-relaxed">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#2e5bff]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <h3 className="text-xl font-bold mb-3 relative z-10">{t.purchase.faq.q4.question}</h3>
+                <p className="text-[#434656] leading-relaxed relative z-10">
                   {t.purchase.faq.q4.answer}
                 </p>
               </motion.div>

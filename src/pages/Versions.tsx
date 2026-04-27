@@ -39,15 +39,53 @@ const Navbar = ({ lang, setLang, t }: { lang: Language; setLang: (lang: Language
 
 const VersionCard = ({ version, lang, t }: { version: typeof versions[0]; lang: Language; t: typeof translations.en }) => {
   const [expanded, setExpanded] = useState(false);
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const changelog = version.changelog[lang];
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isHovered) return;
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateXValue = (y - centerY) / 20;
+    const rotateYValue = (centerX - x) / 20;
+    setRotateX(rotateXValue);
+    setRotateY(rotateYValue);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setRotateX(0);
+    setRotateY(0);
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-3xl shadow-sm border border-black/[0.03] hover:shadow-xl hover:border-black/[0.08] transition-all duration-300 overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+        transition: 'transform 0.1s ease-out'
+      }}
+      className="bg-white rounded-3xl shadow-sm border border-black/[0.03] hover:shadow-2xl hover:border-black/[0.08] transition-all duration-300 overflow-hidden relative group"
     >
-      <div className="p-8">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0040e0]/5 via-transparent to-[#2e5bff]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      {/* Shimmer effect */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
+      </div>
+
+      <div className="p-8 relative z-10">
         <div className="flex justify-between items-start mb-6">
           <div>
             <div className="flex items-center gap-3 mb-2">
@@ -132,14 +170,17 @@ const DownloadButton = ({ platform, url, t }: { platform: string; url?: string; 
   }
 
   return (
-    <a
+    <motion.a
       href={url}
       download
-      className="flex items-center justify-center gap-2 bg-[#0040e0] text-white px-6 py-4 rounded-xl font-semibold hover:bg-[#0035c0] active:scale-95 transition-all shadow-md"
+      whileHover={{ scale: 1.05, y: -2 }}
+      whileTap={{ scale: 0.95 }}
+      className="flex items-center justify-center gap-2 bg-[#0040e0] text-white px-6 py-4 rounded-xl font-semibold hover:bg-[#0035c0] transition-all shadow-md hover:shadow-xl hover:shadow-primary/30 relative overflow-hidden group"
     >
-      <Download size={18} />
-      {t.versions.downloadFor} {platform}
-    </a>
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+      <Download size={18} className="relative z-10" />
+      <span className="relative z-10">{t.versions.downloadFor} {platform}</span>
+    </motion.a>
   );
 };
 
@@ -156,10 +197,16 @@ export default function Versions() {
   };
 
   return (
-    <div className="min-h-screen font-sans selection:bg-primary/20 bg-[#f7f9fb]">
+    <div className="min-h-screen font-sans selection:bg-primary/20 bg-[#f7f9fb] relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-1/4 w-96 h-96 bg-[#0040e0]/10 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-[#2e5bff]/10 rounded-full blur-3xl animate-float-delayed" />
+      </div>
+
       <Navbar lang={lang} setLang={handleSetLang} t={t} />
 
-      <main className="py-20 px-8">
+      <main className="py-20 px-8 relative z-10">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

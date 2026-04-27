@@ -53,20 +53,50 @@ const Navbar = ({ lang, setLang, t, navigate }: { lang: Language; setLang: (lang
   </nav>
 );
 
-const FeatureCard = ({ icon: Icon, title, description, className = "", iconBg = "bg-primary/10", iconColor = "text-primary" }: any) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className={`bg-white p-8 rounded-3xl shadow-sm border border-black/[0.03] hover:shadow-xl hover:border-black/[0.08] transition-all duration-300 ${className}`}
-  >
-    <div className={`w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center mb-6`}>
-      <Icon size={24} className={iconColor} />
-    </div>
-    <h3 className="text-xl font-bold mb-3">{title}</h3>
-    <p className="text-[#434656] leading-relaxed">{description}</p>
-  </motion.div>
-);
+const FeatureCard = ({ icon: Icon, title, description, className = "", iconBg = "bg-primary/10", iconColor = "text-primary" }: any) => {
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateXValue = (y - centerY) / 10;
+    const rotateYValue = (centerX - x) / 10;
+    setRotateX(rotateXValue);
+    setRotateY(rotateYValue);
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+        transition: 'transform 0.1s ease-out'
+      }}
+      className={`bg-white p-8 rounded-3xl shadow-sm border border-black/[0.03] hover:shadow-2xl hover:border-black/[0.08] transition-all duration-300 relative overflow-hidden group ${className}`}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0040e0]/5 via-transparent to-[#2e5bff]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className={`w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center mb-6 relative z-10 group-hover:scale-110 transition-transform duration-300`}>
+        <Icon size={24} className={iconColor} />
+      </div>
+      <h3 className="text-xl font-bold mb-3 relative z-10">{title}</h3>
+      <p className="text-[#434656] leading-relaxed relative z-10">{description}</p>
+    </motion.div>
+  );
+};
 
 export default function Landing() {
   const [lang, setLang] = useState<Language>(() => {
@@ -119,6 +149,12 @@ export default function Landing() {
       <main>
         {/* --- Hero Section --- */}
         <section className="relative pt-20 pb-32 px-8 overflow-hidden">
+          {/* Animated Background */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#0040e0]/10 rounded-full blur-3xl animate-float" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#2e5bff]/10 rounded-full blur-3xl animate-float-delayed" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-[#0040e0]/5 to-[#2e5bff]/5 rounded-full blur-3xl animate-pulse-slow" />
+          </div>
           <div className="max-w-7xl mx-auto text-center relative z-10">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -178,8 +214,9 @@ export default function Landing() {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="relative max-w-6xl mx-auto"
             >
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#0040e0] to-[#2e5bff] blur-[120px] opacity-20"></div>
-              <div className="relative rounded-2xl shadow-2xl overflow-hidden">
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#0040e0] to-[#2e5bff] blur-[120px] opacity-20 animate-pulse-slow"></div>
+              <div className="absolute -inset-4 bg-gradient-to-r from-[#0040e0]/20 via-[#2e5bff]/20 to-[#0040e0]/20 blur-2xl opacity-50 animate-gradient"></div>
+              <div className="relative rounded-2xl shadow-2xl overflow-hidden transform-gpu hover:scale-[1.02] transition-transform duration-500">
                 <div className="relative rounded-xl overflow-hidden group">
                   <AnimatePresence initial={false} custom={currentImageIndex}>
                     <motion.img
@@ -514,32 +551,68 @@ export default function Landing() {
 
 const TechIcon = ({ color, label }: any) => (
   <motion.div
-    whileHover={{ y: -4 }}
+    whileHover={{ y: -8, scale: 1.05 }}
     className="flex items-center gap-4 group cursor-default"
   >
-    <div className={`w-12 h-12 ${color} rounded-2xl shadow-lg group-hover:scale-110 transition-transform`} />
+    <motion.div
+      whileHover={{ rotate: 360 }}
+      transition={{ duration: 0.6 }}
+      className={`w-12 h-12 ${color} rounded-2xl shadow-lg group-hover:shadow-2xl transition-shadow relative overflow-hidden`}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent" />
+    </motion.div>
     <span className="font-extrabold text-2xl text-[#191c1e]/40 group-hover:text-[#191c1e] transition-colors">{label}</span>
   </motion.div>
 );
 
 const DownloadCard = ({ icon: Icon, platform, details, version, navigate, primary }: any) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isHovered) return;
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateXValue = (y - centerY) / 20;
+    const rotateYValue = (centerX - x) / 20;
+    setRotateX(rotateXValue);
+    setRotateY(rotateYValue);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setRotateX(0);
+    setRotateY(0);
+  };
 
   return (
     <motion.div
       whileHover={{ y: -8 }}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="bg-white p-10 rounded-[2.5rem] border border-black/5 shadow-sm hover:shadow-2xl transition-all"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+        transition: 'transform 0.1s ease-out'
+      }}
+      className="bg-white p-10 rounded-[2.5rem] border border-black/5 shadow-sm hover:shadow-2xl transition-all relative overflow-hidden group"
     >
-      <div className="w-20 h-20 bg-[#eceef0] rounded-3xl flex items-center justify-center mx-auto mb-8 text-[#191c1e]">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0040e0]/5 via-transparent to-[#2e5bff]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      <div className="w-20 h-20 bg-[#eceef0] rounded-3xl flex items-center justify-center mx-auto mb-8 text-[#191c1e] relative z-10 group-hover:scale-110 transition-transform duration-300">
         <Icon size={32} />
       </div>
-      <h4 className="text-2xl font-bold mb-2">{platform}</h4>
-      <p className="text-[#434656] text-sm mb-10">{details}</p>
+      <h4 className="text-2xl font-bold mb-2 relative z-10">{platform}</h4>
+      <p className="text-[#434656] text-sm mb-10 relative z-10">{details}</p>
       <button
         onClick={() => navigate('/versions')}
-        className={`w-full py-4 rounded-xl font-bold transition-all block text-center ${
+        className={`w-full py-4 rounded-xl font-bold transition-all block text-center relative z-10 ${
           isHovered
             ? "hero-gradient text-white shadow-lg shadow-primary/30"
             : "bg-[#f2f4f6] text-[#191c1e] hover:bg-[#eceef0]"
