@@ -35,11 +35,13 @@ export const versions: Version[] = [
     changelog: {
       en: [
         "Added SQL log functionality",
-        "Added connection keep-alive time settings"
+        "Added connection keep-alive time settings",
+        "Added keys loading count configuration"
       ],
       zh: [
         "新增SQL日志功能",
-        "新增链接保活时间设置"
+        "新增链接保活时间设置",
+        "新增keys加载条数配置"
       ]
     },
     downloads: {
