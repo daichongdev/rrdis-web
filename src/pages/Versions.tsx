@@ -172,8 +172,42 @@ export default function Versions() {
             <p className="text-xl text-[#434656] max-w-2xl mx-auto">
               {t.versions.subtitle}
             </p>
-            <div className="mt-6 inline-block bg-blue-500/10 border border-blue-500/30 rounded-lg px-6 py-3">
-              <p className="text-blue-600 text-sm font-medium">💡 {t.versions.purchaseNotice}</p>
+            <div className="mt-6 space-y-3">
+              <div className="inline-block bg-blue-500/10 border border-blue-500/30 rounded-lg px-6 py-3">
+                <p className="text-blue-600 text-sm font-medium">💡 {t.versions.purchaseNotice}</p>
+              </div>
+              <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg px-6 py-4 max-w-3xl inline-block">
+                <p className="text-amber-800 text-sm font-medium leading-relaxed mb-3">
+                  {lang === 'zh' ? (
+                    <>
+                      🍎 <span className="font-semibold">macOS 安装提示：</span>如果提示
+                      <span className="text-red-600 font-semibold">「文件已损坏」</span>或
+                      <span className="text-red-600 font-semibold">「无法验证开发者」</span>，
+                      请打开 <span className="text-blue-600 font-semibold">系统设置</span> →
+                      <span className="text-blue-600 font-semibold"> 隐私与安全性</span> →
+                      找到并点击<span className="text-green-600 font-semibold">「仍要打开」</span>按钮
+                    </>
+                  ) : (
+                    <>
+                      🍎 <span className="font-semibold">macOS Installation:</span> If you see
+                      <span className="text-red-600 font-semibold"> "file is damaged"</span> or
+                      <span className="text-red-600 font-semibold"> "cannot verify developer"</span>,
+                      open <span className="text-blue-600 font-semibold">System Settings</span> →
+                      <span className="text-blue-600 font-semibold"> Privacy & Security</span> →
+                      find and click <span className="text-green-600 font-semibold">"Open Anyway"</span> button
+                    </>
+                  )}
+                </p>
+                <div className="bg-gray-900 rounded-lg px-4 py-3 font-mono text-xs text-green-400">
+                  <div className="flex items-start gap-2">
+                    <span className="text-gray-500 select-none">$</span>
+                    <code className="flex-1">sudo xattr -cr /path/to/RRdis.app</code>
+                  </div>
+                  <p className="text-gray-400 text-[11px] mt-2 ml-4">
+                    {lang === 'zh' ? '💡 如果上述方法无效，可在终端执行此命令移除隔离属性' : '💡 If the above method doesn\'t work, run this command in Terminal to remove quarantine attributes'}
+                  </p>
+                </div>
+              </div>
             </div>
           </motion.div>
 
