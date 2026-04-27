@@ -44,7 +44,7 @@ export const versions: Version[] = [
     },
     downloads: {
       macOS: {
-        arm64: "pkg/RRdis-2.1.0.app"
+        arm64: "pkg/RRdis-2.1.0.zip"
       },
       windows: {
         msi: "pkg/RRdis_2.1.0_x64.msi",
@@ -120,7 +120,7 @@ export const versions: Version[] = [
     },
     downloads: {
       macOS: {
-        arm64: "pkg/RRdis-2.0.0.app"
+        arm64: "pkg/RRdis-2.0.0.zip"
       },
       windows: {
         msi: "pkg/RRdis_2.0.0_x64.msi",
