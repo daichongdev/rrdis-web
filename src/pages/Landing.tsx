@@ -114,13 +114,18 @@ export default function Landing() {
 
   const heroImages = [
     '/rrdis-web/assets/1.png',
+    '/rrdis-web/assets/2.png',
+    '/rrdis-web/assets/3.png',
+    '/rrdis-web/assets/4.png',
+    '/rrdis-web/assets/5.png',
     '/rrdis-web/assets/6.png',
     '/rrdis-web/assets/7.png',
     '/rrdis-web/assets/8.png',
     '/rrdis-web/assets/9.png',
     '/rrdis-web/assets/10.png',
     '/rrdis-web/assets/11.png',
-    '/rrdis-web/assets/12.png'
+    '/rrdis-web/assets/12.png',
+    '/rrdis-web/assets/13.png'
   ];
 
   useEffect(() => {
@@ -612,11 +617,10 @@ const DownloadCard = ({ icon: Icon, platform, details, version, navigate, primar
       <p className="text-[#434656] text-sm mb-10 relative z-10">{details}</p>
       <button
         onClick={() => navigate('/versions')}
-        className={`w-full py-4 rounded-xl font-bold transition-all block text-center relative z-10 ${
-          isHovered
-            ? "hero-gradient text-white shadow-lg shadow-primary/30"
-            : "bg-[#f2f4f6] text-[#191c1e] hover:bg-[#eceef0]"
-        }`}>
+        className={`w-full py-4 rounded-xl font-bold transition-all block text-center relative z-10 ${isHovered
+          ? "hero-gradient text-white shadow-lg shadow-primary/30"
+          : "bg-[#f2f4f6] text-[#191c1e] hover:bg-[#eceef0]"
+          }`}>
         {version}
       </button>
     </motion.div>
