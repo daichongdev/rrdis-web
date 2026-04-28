@@ -22,7 +22,8 @@ import {
   ExternalLink,
   Github,
   Globe,
-  ChevronLeft
+  ChevronLeft,
+  Package
 } from "lucide-react";
 import { translations, type Language } from "../i18n";
 
@@ -350,6 +351,13 @@ export default function Landing() {
                 description={t.features.modernUI.desc}
                 iconBg="bg-purple-100"
                 iconColor="text-purple-600"
+              />
+              <FeatureCard
+                icon={Package}
+                title={t.features.lightweight.title}
+                description={t.features.lightweight.desc}
+                iconBg="bg-green-100"
+                iconColor="text-green-600"
               />
             </div>
           </div>

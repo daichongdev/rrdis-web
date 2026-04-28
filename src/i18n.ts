@@ -50,6 +50,10 @@ export const translations = {
       modernUI: {
         title: "Modern UI",
         desc: "A design system that respects your focus and reduces ocular fatigue."
+      },
+      lightweight: {
+        title: "Ultra Lightweight",
+        desc: "Only 5MB installation package. All credentials stored locally, no backend calls, no cloud sync - extreme performance optimization."
       }
     },
     workflow: {
@@ -202,6 +206,10 @@ export const translations = {
       modernUI: {
         title: "现代化界面",
         desc: "尊重您的专注力并减少视觉疲劳的设计系统。"
+      },
+      lightweight: {
+        title: "极致轻量",
+        desc: "安装包仅5MB。所有账号密码本地存储，无后端调用，无云同步 - 极致的性能与架构优化。"
       }
     },
     workflow: {
