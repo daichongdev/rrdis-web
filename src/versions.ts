@@ -37,18 +37,24 @@ export const versions: Version[] = [
         "Added SQL log functionality",
         "Added connection keep-alive time settings",
         "Added keys loading count configuration",
-        "UI adjustments and visual enhancements"
+        "UI adjustments and visual enhancements",
+        "Fixed error link issues",
+        "Optimized UI design",
+        "Key deletion no longer requires API refresh"
       ],
       zh: [
         "新增SQL日志功能",
         "新增链接保活时间设置",
         "新增keys加载条数配置",
-        "UI调整"
+        "UI调整",
+        "优化错误链接问题",
+        "优化UI设计",
+        "删除key后无需调用接口刷新数据"
       ]
     },
     downloads: {
       macOS: {
-        arm64: "pkg/RRdis_2.1.0_aarch64.dmg.zip",
+        arm64: "pkg/RRdis_2.1.0_aarch64.dmg",
       },
       windows: {
         msi: "pkg/RRdis_2.1.0_x64.msi",
