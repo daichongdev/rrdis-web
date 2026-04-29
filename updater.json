@@ -1,19 +1,19 @@
 {
-  "version": "v2.1.15",
-  "notes": "See the release notes at https://github.com/daichongdev/rrdis-web/releases/tag/v2.1.15",
-  "pub_date": "2026-04-29T08:52:59Z",
+  "version": "v2.1.16",
+  "notes": "See the release notes at https://github.com/daichongdev/rrdis-web/releases/tag/v2.1.16",
+  "pub_date": "2026-04-29T10:27:33Z",
   "platforms": {
     "darwin-x86_64": {
       "signature": "",
-      "url": "https://github.com/daichongdev/rrdis-web/releases/download/v2.1.15/rrdis_x64.dmg"
+      "url": "https://github.com/daichongdev/rrdis-web/releases/download/v2.1.16/rrdis_x64.dmg"
     },
     "darwin-aarch64": {
       "signature": "",
-      "url": "https://github.com/daichongdev/rrdis-web/releases/download/v2.1.15/rrdis_aarch64.dmg"
+      "url": "https://github.com/daichongdev/rrdis-web/releases/download/v2.1.16/rrdis_aarch64.dmg"
     },
     "windows-x86_64": {
       "signature": "",
-      "url": "https://github.com/daichongdev/rrdis-web/releases/download/v2.1.15/rrdis_x64-setup.exe"
+      "url": "https://github.com/daichongdev/rrdis-web/releases/download/v2.1.16/rrdis_x64-setup.exe"
     }
   }
 }
