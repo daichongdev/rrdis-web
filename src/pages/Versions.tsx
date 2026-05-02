@@ -4,11 +4,23 @@
  */
 
 import { motion } from "motion/react";
-import { Download, Calendar, ChevronDown, ChevronUp, Monitor, Github, Globe } from "lucide-react";
-import { useState } from "react";
+import { Download, Calendar, Globe, ExternalLink } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { versions } from "../versions";
 import { translations, type Language } from "../i18n";
+
+interface GitHubRelease {
+  tag_name: string;
+  name: string;
+  published_at: string;
+  html_url: string;
+  prerelease: boolean;
+  body: string;
+  assets: Array<{
+    name: string;
+    browser_download_url: string;
+  }>;
+}
 
 const Navbar = ({ lang, setLang, t }: { lang: Language; setLang: (lang: Language) => void; t: typeof translations.en }) => (
   <nav className="sticky top-0 w-full z-50 bg-[#f7f9fb]/80 backdrop-blur-md border-b border-black/5">
@@ -37,12 +49,10 @@ const Navbar = ({ lang, setLang, t }: { lang: Language; setLang: (lang: Language
   </nav>
 );
 
-const VersionCard = ({ version, lang, t }: { version: typeof versions[0]; lang: Language; t: typeof translations.en }) => {
-  const [expanded, setExpanded] = useState(false);
+const VersionCard = ({ release, lang, t }: { release: GitHubRelease; lang: Language; t: typeof translations.en }) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const changelog = version.changelog[lang];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isHovered) return;
@@ -63,6 +73,34 @@ const VersionCard = ({ version, lang, t }: { version: typeof versions[0]; lang: 
     setRotateX(0);
     setRotateY(0);
   };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const getSupportedPlatforms = () => {
+    const platforms = new Set<string>();
+    release.assets.forEach(asset => {
+      const name = asset.name.toLowerCase();
+      if (name.includes('dmg') || name.includes('macos') || name.includes('darwin') || name.includes('aarch64')) {
+        platforms.add('macOS');
+      }
+      if (name.includes('msi') || name.includes('exe') || name.includes('windows')) {
+        platforms.add('Windows');
+      }
+      if (name.includes('appimage') || name.includes('deb') || name.includes('rpm') || name.includes('linux')) {
+        platforms.add('Linux');
+      }
+    });
+    return Array.from(platforms);
+  };
+
+  const supportedPlatforms = getSupportedPlatforms();
 
   return (
     <motion.div
@@ -86,101 +124,51 @@ const VersionCard = ({ version, lang, t }: { version: typeof versions[0]; lang: 
       </div>
 
       <div className="p-8 relative z-10">
-        <div className="flex justify-between items-start mb-6">
+        <div className="flex justify-between items-center mb-6">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h3 className="text-3xl font-bold">v{version.version}</h3>
-              {version.isPaid ? (
+              <h3 className="text-3xl font-bold">{release.tag_name}</h3>
+              {!release.prerelease ? (
                 <span className="bg-gradient-to-r from-[#0040e0] to-[#2e5bff] text-white px-3 py-1 rounded-full text-sm font-semibold">
                   {t.versions.paid}
                 </span>
               ) : (
-                <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  {t.versions.free}
+                <span className="bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  Pre-release
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-2 text-[#434656]">
+            <div className="flex items-center gap-2 text-[#434656] mb-2">
               <Calendar size={16} />
-              <span className="text-sm">{t.versions.releaseDate}: {version.date}</span>
+              <span className="text-sm">{t.versions.releaseDate}: {formatDate(release.published_at)}</span>
             </div>
+            {supportedPlatforms.length > 0 && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-sm text-[#434656]">{lang === 'zh' ? '支持系统:' : 'Platforms:'}</span>
+                {supportedPlatforms.map((platform, idx) => (
+                  <span key={idx} className="bg-[#f2f4f6] text-[#434656] px-3 py-1 rounded-lg text-xs font-medium">
+                    {platform}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="flex items-center gap-2 text-[#0040e0] font-semibold hover:underline"
+          <motion.a
+            href={release.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center justify-center gap-2 bg-[#0040e0] text-white px-8 py-3 rounded-xl font-semibold hover:bg-[#0035c0] transition-all shadow-md hover:shadow-xl hover:shadow-primary/30 relative overflow-hidden group"
           >
-            {t.versions.changelog}
-            {expanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-          </button>
-        </div>
-
-        {expanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="mb-6 bg-[#f2f4f6] rounded-2xl p-6"
-          >
-            <ul className="space-y-2">
-              {changelog.map((item, idx) => (
-                <li key={idx} className="flex items-start gap-3">
-                  <span className="text-[#0040e0] mt-1">•</span>
-                  <span className="text-[#434656]">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-
-        <div className="grid md:grid-cols-3 gap-4">
-          {version.downloads.macOS && (
-            <DownloadButton
-              platform="macOS"
-              url={version.downloads.macOS.arm64 || version.downloads.macOS.x64}
-              t={t}
-            />
-          )}
-          {version.downloads.windows?.msi && (
-            <DownloadButton
-              platform="Windows (MSI)"
-              url={version.downloads.windows.msi}
-              t={t}
-            />
-          )}
-          {version.downloads.windows?.exe && (
-            <DownloadButton
-              platform="Windows (EXE)"
-              url={version.downloads.windows.exe}
-              t={t}
-            />
-          )}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+            <Download size={18} className="relative z-10" />
+            <span className="relative z-10">{lang === 'zh' ? '前往下载' : 'Download'}</span>
+            <ExternalLink size={16} className="relative z-10" />
+          </motion.a>
         </div>
       </div>
     </motion.div>
-  );
-};
-
-const DownloadButton = ({ platform, url, t }: { platform: string; url?: string; t: typeof translations.en }) => {
-  if (!url) {
-    return (
-      <div className="bg-[#f2f4f6] p-4 rounded-xl text-center text-[#434656] text-sm">
-        {t.versions.noDownload}
-      </div>
-    );
-  }
-
-  return (
-    <motion.a
-      href={url}
-      download
-      whileHover={{ scale: 1.05, y: -2 }}
-      whileTap={{ scale: 0.95 }}
-      className="flex items-center justify-center gap-2 bg-[#0040e0] text-white px-6 py-4 rounded-xl font-semibold hover:bg-[#0035c0] transition-all shadow-md hover:shadow-xl hover:shadow-primary/30 relative overflow-hidden group"
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
-      <Download size={18} className="relative z-10" />
-      <span className="relative z-10">{t.versions.downloadFor} {platform}</span>
-    </motion.a>
   );
 };
 
@@ -190,6 +178,31 @@ export default function Versions() {
     return (saved === 'en' || saved === 'zh') ? saved : 'en';
   });
   const t = translations[lang];
+  const [releases, setReleases] = useState<GitHubRelease[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchReleases = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('https://api.github.com/repos/daichongdev/rrdis-web/releases');
+        if (!response.ok) {
+          throw new Error('Failed to fetch releases');
+        }
+        const data = await response.json();
+        setReleases(data);
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Unknown error');
+        console.error('Error fetching releases:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReleases();
+  }, []);
 
   const handleSetLang = (newLang: Language) => {
     setLang(newLang);
@@ -258,11 +271,23 @@ export default function Versions() {
             </div>
           </motion.div>
 
-          <div className="space-y-6">
-            {versions.map((version, idx) => (
-              <VersionCard key={idx} version={version} lang={lang} t={t} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-20">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#0040e0]"></div>
+              <p className="mt-4 text-[#434656]">{lang === 'zh' ? '加载中...' : 'Loading...'}</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-20">
+              <p className="text-red-600 mb-4">{lang === 'zh' ? '加载失败' : 'Failed to load releases'}</p>
+              <p className="text-[#434656]">{error}</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {releases.map((release, idx) => (
+                <VersionCard key={idx} release={release} lang={lang} t={t} />
+              ))}
+            </div>
+          )}
         </div>
       </main>
 
