@@ -5,22 +5,10 @@
 
 import { motion } from "motion/react";
 import { Download, Calendar, Globe, ExternalLink } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { translations, type Language } from "../i18n";
-
-interface GitHubRelease {
-  tag_name: string;
-  name: string;
-  published_at: string;
-  html_url: string;
-  prerelease: boolean;
-  body: string;
-  assets: Array<{
-    name: string;
-    browser_download_url: string;
-  }>;
-}
+import { versions, type Version } from "../versions";
 
 const Navbar = ({ lang, setLang, t }: { lang: Language; setLang: (lang: Language) => void; t: typeof translations.en }) => (
   <nav className="sticky top-0 w-full z-50 bg-[#f7f9fb]/80 backdrop-blur-md border-b border-black/5">
@@ -49,7 +37,7 @@ const Navbar = ({ lang, setLang, t }: { lang: Language; setLang: (lang: Language
   </nav>
 );
 
-const VersionCard = ({ release, lang, t }: { release: GitHubRelease; lang: Language; t: typeof translations.en }) => {
+const VersionCard = ({ version, lang, t }: { version: Version; lang: Language; t: typeof translations.en }) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -84,23 +72,15 @@ const VersionCard = ({ release, lang, t }: { release: GitHubRelease; lang: Langu
   };
 
   const getSupportedPlatforms = () => {
-    const platforms = new Set<string>();
-    release.assets.forEach(asset => {
-      const name = asset.name.toLowerCase();
-      if (name.includes('dmg') || name.includes('macos') || name.includes('darwin') || name.includes('aarch64')) {
-        platforms.add('macOS');
-      }
-      if (name.includes('msi') || name.includes('exe') || name.includes('windows')) {
-        platforms.add('Windows');
-      }
-      if (name.includes('appimage') || name.includes('deb') || name.includes('rpm') || name.includes('linux')) {
-        platforms.add('Linux');
-      }
-    });
-    return Array.from(platforms);
+    const platforms: string[] = [];
+    if (version.downloads.macOS) platforms.push('macOS');
+    if (version.downloads.windows) platforms.push('Windows');
+    if (version.downloads.linux) platforms.push('Linux');
+    return platforms;
   };
 
   const supportedPlatforms = getSupportedPlatforms();
+  const downloadUrl = `https://github.com/daichongdev/rrdis-web/releases/tag/v${version.version}`;
 
   return (
     <motion.div
@@ -127,20 +107,20 @@ const VersionCard = ({ release, lang, t }: { release: GitHubRelease; lang: Langu
         <div className="flex justify-between items-center mb-6">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h3 className="text-3xl font-bold">{release.tag_name}</h3>
-              {!release.prerelease ? (
+              <h3 className="text-3xl font-bold">v{version.version}</h3>
+              {version.isPaid ? (
                 <span className="bg-gradient-to-r from-[#0040e0] to-[#2e5bff] text-white px-3 py-1 rounded-full text-sm font-semibold">
                   {t.versions.paid}
                 </span>
               ) : (
-                <span className="bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  Pre-release
+                <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  {lang === 'zh' ? '免费' : 'Free'}
                 </span>
               )}
             </div>
             <div className="flex items-center gap-2 text-[#434656] mb-2">
               <Calendar size={16} />
-              <span className="text-sm">{t.versions.releaseDate}: {formatDate(release.published_at)}</span>
+              <span className="text-sm">{t.versions.releaseDate}: {formatDate(version.date)}</span>
             </div>
             {supportedPlatforms.length > 0 && (
               <div className="flex items-center gap-2 flex-wrap">
@@ -154,7 +134,7 @@ const VersionCard = ({ release, lang, t }: { release: GitHubRelease; lang: Langu
             )}
           </div>
           <motion.a
-            href={release.html_url}
+            href={downloadUrl}
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05, y: -2 }}
@@ -178,31 +158,6 @@ export default function Versions() {
     return (saved === 'en' || saved === 'zh') ? saved : 'en';
   });
   const t = translations[lang];
-  const [releases, setReleases] = useState<GitHubRelease[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchReleases = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('https://api.github.com/repos/daichongdev/rrdis-web/releases');
-        if (!response.ok) {
-          throw new Error('Failed to fetch releases');
-        }
-        const data = await response.json();
-        setReleases(data);
-        setError(null);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
-        console.error('Error fetching releases:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchReleases();
-  }, []);
 
   const handleSetLang = (newLang: Language) => {
     setLang(newLang);
@@ -271,23 +226,11 @@ export default function Versions() {
             </div>
           </motion.div>
 
-          {loading ? (
-            <div className="text-center py-20">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#0040e0]"></div>
-              <p className="mt-4 text-[#434656]">{lang === 'zh' ? '加载中...' : 'Loading...'}</p>
-            </div>
-          ) : error ? (
-            <div className="text-center py-20">
-              <p className="text-red-600 mb-4">{lang === 'zh' ? '加载失败' : 'Failed to load releases'}</p>
-              <p className="text-[#434656]">{error}</p>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {releases.map((release, idx) => (
-                <VersionCard key={idx} release={release} lang={lang} t={t} />
-              ))}
-            </div>
-          )}
+          <div className="space-y-6">
+            {versions.map((version, idx) => (
+              <VersionCard key={idx} version={version} lang={lang} t={t} />
+            ))}
+          </div>
         </div>
       </main>
 
