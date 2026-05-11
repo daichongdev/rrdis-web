@@ -125,8 +125,6 @@ export default function Landing() {
     '/rrdis-web/assets/9.png',
     '/rrdis-web/assets/10.png',
     '/rrdis-web/assets/11.png',
-    '/rrdis-web/assets/12.png',
-    '/rrdis-web/assets/13.png'
   ];
 
   useEffect(() => {
