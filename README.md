@@ -164,10 +164,9 @@ RRdis 是一款高性能的 Redis 桌面管理客户端，专为追求精准、�
 
 | 平台 | 架构 | 下载 |
 |------|------|------|
-| **macOS** | Apple Silicon (M1/M2/M3) | [下载 .dmg](https://github.com/yourusername/rrdis/releases) |
-| **macOS** | Intel (x64) | [下载 .dmg](https://github.com/yourusername/rrdis/releases) |
-| **Windows** | x64 | [下载 .msi](https://github.com/yourusername/rrdis/releases) / [.exe](https://github.com/yourusername/rrdis/releases) |
-| **Linux** | x64 | [下载 .AppImage](https://github.com/yourusername/rrdis/releases) |
+| **macOS** | Apple Silicon (M1/M2/M3) | [下载 .dmg](https://github.com/daichongdev/rrdis-web/releases) |
+| **macOS** | Intel (x64) | [下载 .dmg](https://github.com/daichongdev/rrdis-web/releases) |
+| **Windows** | x64 | [下载 .msi](https://github.com/daichongdev/rrdis-web/releases) / [.exe](https://github.com/daichongdev/rrdis-web/releases) |
 
 ### 📝 v2.0.0 版本更新
 
