@@ -27,32 +27,41 @@ import {
 } from "lucide-react";
 import { translations, type Language } from "../i18n";
 
-const Navbar = ({ lang, setLang, t, navigate }: { lang: Language; setLang: (lang: Language) => void; t: typeof translations.en; navigate: any }) => (
-  <nav className="sticky top-0 w-full z-50 bg-[#f7f9fb]/80 backdrop-blur-md border-b border-black/5">
-    <div className="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
-      <Link to="/" className="text-2xl font-black tracking-tighter text-[#191c1e]">RRdis</Link>
-      <div className="hidden md:flex items-center gap-8">
-        <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#features">{t.nav.features}</a>
-        <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#demo">{t.nav.demo}</a>
-        <a className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" href="#tech">{t.nav.tech}</a>
-        <Link className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" to="/versions">{t.nav.versions}</Link>
-        <Link className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" to="/purchase">{t.nav.purchase}</Link>
+const Navbar = ({ lang, setLang, t, navigate }: { lang: Language; setLang: (lang: Language) => void; t: typeof translations.en; navigate: any }) => {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  return (
+    <nav className="sticky top-0 w-full z-50 bg-[#f7f9fb]/80 backdrop-blur-md border-b border-black/5">
+      <div className="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+        <Link to="/" className="text-2xl font-black tracking-tighter text-[#191c1e]">RRdis</Link>
+        <div className="hidden md:flex items-center gap-8">
+          <button className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" onClick={() => scrollToSection('features')}>{t.nav.features}</button>
+          <button className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" onClick={() => scrollToSection('demo')}>{t.nav.demo}</button>
+          <button className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" onClick={() => scrollToSection('tech')}>{t.nav.tech}</button>
+          <Link className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" to="/versions">{t.nav.versions}</Link>
+          <Link className="text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors" to="/purchase">{t.nav.purchase}</Link>
+        </div>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setLang(lang === 'en' ? 'zh' : 'en')}
+            className="flex items-center gap-2 text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors px-3 py-2 rounded-lg hover:bg-black/5"
+          >
+            <Globe size={18} />
+            {lang === 'en' ? 'EN' : '中文'}
+          </button>
+          <button className="hero-gradient text-white px-6 py-2.5 rounded-lg font-semibold active:scale-95 duration-200 transition-all shadow-md" onClick={() => navigate('/versions')}>
+            {t.nav.download}
+          </button>
+        </div>
       </div>
-      <div className="flex items-center gap-4">
-        <button
-          onClick={() => setLang(lang === 'en' ? 'zh' : 'en')}
-          className="flex items-center gap-2 text-[#191c1e]/70 hover:text-[#0040e0] font-medium transition-colors px-3 py-2 rounded-lg hover:bg-black/5"
-        >
-          <Globe size={18} />
-          {lang === 'en' ? 'EN' : '中文'}
-        </button>
-        <a href="#download" className="hero-gradient text-white px-6 py-2.5 rounded-lg font-semibold active:scale-95 duration-200 transition-all shadow-md" onClick={(e) => { e.preventDefault(); navigate('/versions'); }}>
-          {t.nav.download}
-        </a>
-      </div>
-    </div>
-  </nav>
-);
+    </nav>
+  );
+};
 
 const FeatureCard = ({ icon: Icon, title, description, className = "", iconBg = "bg-primary/10", iconColor = "text-primary" }: any) => {
   const [rotateX, setRotateX] = useState(0);
@@ -506,12 +515,12 @@ export default function Landing() {
                 {t.openSource.desc}
               </p>
               <div className="flex flex-wrap gap-6">
-                <a className="flex items-center gap-3 text-lg font-bold hover:text-[#0040e0] transition-colors" href="#">
+                <button className="flex items-center gap-3 text-lg font-bold hover:text-[#0040e0] transition-colors">
                   <Users size={24} /> {t.openSource.community}
-                </a>
-                <a className="flex items-center gap-3 text-lg font-bold hover:text-[#0040e0] transition-colors" href="#">
+                </button>
+                <button className="flex items-center gap-3 text-lg font-bold hover:text-[#0040e0] transition-colors">
                   <Heart size={24} /> {t.openSource.donate}
-                </a>
+                </button>
               </div>
             </div>
 
@@ -534,18 +543,21 @@ export default function Landing() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <Link to="/" className="text-2xl font-black text-[#191c1e]">RRdis</Link>
             <div className="flex gap-8">
-              <a href="#features" className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
+              <button onClick={() => {
+                const element = document.getElementById('features');
+                if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }} className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
                 {t.footer.features}
-              </a>
-              <a className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
+              </button>
+              <button className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
                 {t.footer.privacy}
-              </a>
-              <a className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
+              </button>
+              <button className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
                 {t.footer.terms}
-              </a>
-              <a className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
+              </button>
+              <button className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
                 {t.footer.support}
-              </a>
+              </button>
               <a href="https://github.com/daichongdev/rrdis-web" target="_blank" rel="noopener noreferrer" className="text-[#191c1e]/60 hover:text-[#0040e0] font-medium transition-colors cursor-pointer">
                 {t.footer.github}
               </a>
